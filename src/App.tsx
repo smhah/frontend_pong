@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useEffect, useRef, useState } from "react"
+import React, { StrictMode, useEffect, useRef, useState } from "react"
 import Sketch from "react-p5"
 import io, {Socket} from "socket.io-client"
 import MessageInput from './tsxFiles/MessageInput'
@@ -281,11 +281,14 @@ function App() {
   //   </>
   // )
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/game' element={<Game/>} />
-      </Routes>
-    </BrowserRouter>
+    // <>nothing</>
+    // <StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/game' element={<Game/>} />
+        </Routes>
+      </BrowserRouter>
+    // </StrictMode>
   )
 }
 

@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import Waiting from "./components/waiting";
 import { GameState } from "./utils/models";
+import Play from "./components/playing";
 
 const Game = () => {
     const socket = useRef(null as null | Socket);
     const gameState = useRef(null as null | GameState);
     const [state, setState] = useState("waiting");
+
     useEffect(()=> {
         socket.current = io("http://localhost:6001").on("connect", () => {
             console.log("player " + socket.current?.id + " trying to play");
@@ -20,6 +22,7 @@ const Game = () => {
             //     (!opponent || location.state?.retry) &&
             //     !once
             // ) {
+            console.log("state is = " + data.state);
             if (state == "waiting")
             {
                 // setOpponent(
@@ -46,22 +49,37 @@ const Game = () => {
             socket.current?.close();
         }
     });
-    })
+    }, []);
     let page;
-    if(state == "waiting")
+    if(state == "play")
+    // if(false)
     {
-        page = (<Waiting
-            setState={setState} />
-        );
+        page = <div>
+            <p>GAME IS UNDER</p>
+                <Play
+                socket = {socket} 
+                gameState = {gameState}
+                />
+        </div> 
     }
-    else if (state == "playing")
+    else
     {
-
+        page = <>WaitinG</>
     }
-    else if (state == "canceled") {
+    // if(state == "waiting")
+    // {
+    //     page = (<Waiting
+    //         setState={setState} />
+    //     );
+    // }
+    // else if (state == "playing")
+    // {
 
-    }
-    return <>NOTHING</>
+    // }
+    // else if (state == "canceled") {
+
+    // }
+    return <>{page}</>
 };
 
 export default Game;
