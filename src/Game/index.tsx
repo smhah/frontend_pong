@@ -3,43 +3,32 @@ import { io, Socket } from "socket.io-client";
 import Waiting from "./components/waiting";
 import { GameState } from "./utils/models";
 import Play from "./components/playing";
+import { useSearchParams } from "react-router-dom";
 
 const Game = () => {
     const socket = useRef(null as null | Socket);
     const gameState = useRef(null as null | GameState);
     const [state, setState] = useState("waiting");
+    const [searchParams] = useSearchParams();
 
+    const spect = null;
+    console.log("spect is ==== " + spect);
     useEffect(()=> {
         socket.current = io("http://localhost:6001").on("connect", () => {
-            console.log("player " + socket.current?.id + " trying to play");
-            socket.current?.emit("playerJoined");
-    
+            if(spect)
+            {
+                //socket.current?.emit("spectJoined", {gameId : spect});
+                socket.current?.emit("spectJoined", {input: "SPACE"});
+            }
+            else
+            {
+                console.log("player " + socket.current?.id + " trying to play");
+                socket.current?.emit("playerJoined");
+            }
         socket.current?.on("gameState", (data: GameState) => {
-            // if (
-            //     (gameState == "waiting" && || location.state?.retry) &&
-            //     (location?.state?.mode.toLowerCase() === data.mode.toLowerCase() ||
-            //     spectate) &&
-            //     (!opponent || location.state?.retry) &&
-            //     !once
-            // ) {
-            console.log("state is = " + data.state);
             if (state == "waiting")
             {
-                // setOpponent(
-                // JSON.parse(data.playerData)[
-                //     (data.players.indexOf(socket.current?.id || "") + 1) % 2
-                // ]
-                // );
-                // setPlayers(JSON.parse(data.playerData));
-    
-                // once = true;
                 setState("play");
-                // setTimeout(
-                // () => {
-                //     setState("play");
-                // },
-                // spectate ? 0 : 2000
-                // );
             }
             gameState.current = data;
         });

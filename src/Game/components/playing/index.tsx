@@ -8,6 +8,7 @@ type Props = {
 
 const Play: FunctionComponent<Props> = (props) => {
 
+    const ref = useRef(null);
     const getWindowSize = () => {
         const {innerWidth, innerHeight} = window;
         return {innerWidth, innerHeight};
@@ -29,16 +30,19 @@ const Play: FunctionComponent<Props> = (props) => {
         };
         }, []);
 
+    
     useEffect(() => {
         const setup = () => {
-            setSectionWidth(windowSize.innerWidth);
-            setSectionHeight(windowSize.innerHeight);
+            setSectionWidth((ref.current as any).clientWidth);
+            setSectionHeight((ref.current as any).clientHeight);
+            console.log("width is " + sectionWidth);
+            console.log("height is " + sectionHeight);
         };
         setup();
-    }, [windowSize.innerHeight, windowSize.innerWidth])
+    })
 
     return (
-        <div>
+        <div ref = {ref}>
                 <Canva
                     gameState={props.gameState}
                     socket={props.socket}

@@ -25,6 +25,8 @@ interface GameState {
     players : Array<string>;
 
     scores: Array<number>;
+    maxScore : number;
+    winner : string;
     lastscored: string;
 }
 
