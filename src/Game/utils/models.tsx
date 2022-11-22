@@ -23,6 +23,7 @@ interface GameState {
 
     state: string; // "waiting" | "play" | "scored" | "endGame"
     players : Array<string>;
+    spectators: Array<string>;
 
     scores: Array<number>;
     maxScore : number;

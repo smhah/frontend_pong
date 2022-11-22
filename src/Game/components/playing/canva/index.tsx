@@ -127,13 +127,23 @@ const Canva: FunctionComponent<Props> = (props) => {
         const scores = getGameState().scores;
         const scoresSum = scores[0] + scores[1];
         //p5.text("HAHAHAHAHAHHAHAHA", props.width  3 / 2, props.height / 2);
-        p5.text(
-          props.socket.current.id === getGameState().lastscored
-            ? "Waiting for oponent to start the game"
-            : "Click enter to start the game ",
-          (props.width) / 2, // relativeWidth / 2
-          props.height / 8 // 5 * (relativeHeight / 8)
-        );
+        if(getGameState().players.indexOf(props.socket.current.id) == -1)
+        {
+          p5.text("Waiting for players to start the game",
+            (props.width) / 2, // relativeWidth / 2
+            props.height / 8 // 5 * (relativeHeight / 8)
+          );
+        }
+        else
+        {
+          p5.text(
+            props.socket.current.id === getGameState().lastscored
+              ? "Waiting for oponent to start the game"
+              : "Click enter to start the game ",
+            (props.width) / 2, // relativeWidth / 2
+            props.height / 8 // 5 * (relativeHeight / 8)
+          );
+        }
       }
     };
 
@@ -182,8 +192,18 @@ const Canva: FunctionComponent<Props> = (props) => {
       return false;
     }
 
+    useEffect(() => {
+      return () => {
+        if (canvas !== undefined) canvas.remove();
+      };
+    }, []);
+
     const draw = (p5: p5Types) => {
 
+        // let isSpect = false;
+  
+        // if(getGameState().spectators.indexOf(props.socket.current.id) > -1)
+        //   isSpect = true;
         initCanva(p5);
     
         if(drawDisconnectOrFinalOutcome(p5)) return;
@@ -199,13 +219,14 @@ const Canva: FunctionComponent<Props> = (props) => {
         drawPaddleTwo(p5);
 
         //handle input
-        if (getGameState().players.indexOf(props.socket.current.id) === 0)
-        handlePlayerOneInput(p5);
-        if (getGameState().players.indexOf(props.socket.current.id) === 1)
-        handlePlayerTwoInput(p5);
+          if (getGameState().players.indexOf(props.socket.current.id) === 0)
+          handlePlayerOneInput(p5);
+          if (getGameState().players.indexOf(props.socket.current.id) === 1)
+          handlePlayerTwoInput(p5);
+
     }
     return (
-        <div>
+        <div>//
         <p>SKETCH IS UNDER</p>
         <Sketch setup={setup} draw={draw} windowResized={onResize}/>
         </div>

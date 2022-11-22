@@ -39,10 +39,12 @@ const Play: FunctionComponent<Props> = (props) => {
             console.log("height is " + sectionHeight);
         };
         setup();
-    })
+    }, [(ref.current as any)?.clientWidth])
 
     return (
-        <div ref = {ref}>
+        <div 
+            ref = {ref}
+        >
                 <Canva
                     gameState={props.gameState}
                     socket={props.socket}

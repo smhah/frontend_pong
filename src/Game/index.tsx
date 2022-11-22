@@ -11,14 +11,14 @@ const Game = () => {
     const [state, setState] = useState("waiting");
     const [searchParams] = useSearchParams();
 
-    const spect = null;
+    const spect = searchParams.get("spect");
     console.log("spect is ==== " + spect);
     useEffect(()=> {
         socket.current = io("http://localhost:6001").on("connect", () => {
             if(spect)
             {
                 //socket.current?.emit("spectJoined", {gameId : spect});
-                socket.current?.emit("spectJoined", {input: "SPACE"});
+                socket.current?.emit("spectJoined", {input: spect});
             }
             else
             {
